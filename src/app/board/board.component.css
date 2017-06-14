@@ -1,9 +1,19 @@
+body{
+  font-family: 'Roboto Slab', serif;
+}
 td{
   border: 1px solid black;
   height: 40px;
   width: 40px;
   background: lightgray;
   text-align: center;
+}
+p{
+  color: white;
+}
+.logo{
+  height: 20px;
+  margin: 0px;
 }
 
 table {

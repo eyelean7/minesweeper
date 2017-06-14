@@ -5,11 +5,15 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
+import { HighlightDirective } from './highlight.directive';
+import { RightClickDirective } from './right-click.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoardComponent
+    BoardComponent,
+    HighlightDirective,
+    RightClickDirective
   ],
   imports: [
     BrowserModule,

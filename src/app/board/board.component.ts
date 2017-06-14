@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Square } from '../models/square.model';
 
 @Component({
@@ -7,9 +7,11 @@ import { Square } from '../models/square.model';
   styleUrls: ['./board.component.css']
 })
 
-
-
 export class BoardComponent implements OnInit {
+  @HostListener('document:contextmenu', ['$event'])
+  onDocumentRightClick(event) {
+    event.preventDefault();
+  }
 
   shuffle = function(a) {
     for (let i = a.length; i; i--) {
@@ -59,10 +61,16 @@ export class BoardComponent implements OnInit {
       this.board.push(output);
     }
   }
+  squareFlag(square){
+    if(!square.clicked){
+      square.flagged = !square.flagged;
+    }
+  }
 
   squareClick(square){
     if(!square.clicked){
       square.clicked = true;
+
       if(square.mine){
         alert('Ded');
       }
@@ -84,7 +92,6 @@ export class BoardComponent implements OnInit {
             square.adjacentMines += 1;
           }
         })
-        console.log(square.adjacentMines)
       }
     }
   }
