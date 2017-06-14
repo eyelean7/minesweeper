@@ -8,6 +8,38 @@ import { Square } from '../models/square.model';
 })
 
 export class BoardComponent implements OnInit {
+  time = 0;
+  ngOnInit() {
+    //Generate and shuffle squares
+    for (var i = 0; i < this.mines; i++) {
+      this.squares.push(new Square(true,[0,0]))
+    }
+    for (var i = 0; i < Math.pow(this.rows,2)-this.mines; i++){
+      this.squares.push(new Square(false,[0,0]))
+    }
+    this.shuffle(this.squares);
+
+    //Organize squares into board
+    for(var i=0; i<this.rows; i++){
+      var output = [];
+      for(var j=0; j<this.rows; j++){
+        var square = this.squares.pop()
+        square.coordinates = [i,j];
+        output.push(square)
+      }
+      this.board.push(output);
+    }
+    //iterate through board, assign every square's adjacentMines
+  }
+  countTime = function(){
+    console.log(this.time)
+    this.time += .1;
+  }
+  setTimer = function(){
+    // this.time=0
+    setInterval(this.countTime(),100);
+  }
+
   @HostListener('document:contextmenu', ['$event'])
   onDocumentRightClick(event) {
     event.preventDefault();
@@ -32,6 +64,21 @@ export class BoardComponent implements OnInit {
     })
     return mine;
   }
+  winCheck = function(){
+    var counter = 0;
+    var win = false;
+    this.board.forEach(function(boardRow){
+      boardRow.forEach(function(square){
+        if(square.clicked){
+          counter += 1;
+        }
+      })
+    })
+    if(counter>=(Math.pow(this.rows, 2)-this.mines)){
+      win = true;
+    }
+    return win;
+  }
 
   rows = 8;
   mines = 10;
@@ -40,27 +87,6 @@ export class BoardComponent implements OnInit {
   board: any[] = [];
   constructor() { }
 
-  ngOnInit() {
-    //Generate and shuffle squares
-    for (var i = 0; i < this.mines; i++) {
-      this.squares.push(new Square(true,[0,0]))
-    }
-    for (var i = 0; i < Math.pow(this.rows,2)-this.mines; i++){
-      this.squares.push(new Square(false,[0,0]))
-    }
-    this.shuffle(this.squares);
-
-    //Organize squares into board
-    for(var i=0; i<this.rows; i++){
-      var output = [];
-      for(var j=0; j<this.rows; j++){
-        var square = this.squares.pop()
-        square.coordinates = [i,j];
-        output.push(square)
-      }
-      this.board.push(output);
-    }
-  }
   squareFlag(square){
     if(!square.clicked){
       square.flagged = !square.flagged;
@@ -69,6 +95,7 @@ export class BoardComponent implements OnInit {
 
   squareClick(square){
     if(!square.clicked){
+      this.setTimer();
       square.clicked = true;
 
       if(square.mine){
@@ -93,6 +120,9 @@ export class BoardComponent implements OnInit {
           }
         })
       }
+    }
+    if(this.winCheck()){
+      alert('You Win!');
     }
   }
 

@@ -1,10 +1,13 @@
 
 <table style='margin: auto;'>
   <tr *ngFor='let row of board'>
-    <td appRightClick myHighlight *ngFor='let square of row' (click)='squareClick(square)' (contextmenu)='squareFlag(square)'>
+    <td appRightClick myHighlight *ngFor='let square of row' (click)='squareClick(square)' (click)='setTimer()' (contextmenu)='squareFlag(square)'>
       <p *ngIf='square.clicked'>{{square.adjacentMines}}<p>
       <img *ngIf='square.flagged' class='logo' src="../assets/img/flag.png" alt="">
       <img *ngIf='square.mine' class='logo' src='../../favicon.ico'>
     </td>
   </tr>
 </table>
+<br>
+<a href='/'>Reset</a>
+<h3>Seconds: {{time}}</h3>
