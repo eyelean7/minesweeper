@@ -1,7 +1,9 @@
 
 <table style='margin: auto;'>
   <tr *ngFor='let row of board'>
-    <td *ngFor='let square of row'>
+    <td *ngFor='let square of row' (click)='squareClick(square)'>
+      <p *ngIf='square.clicked'>{{square.adjacentMines}}<p>
+      <p *ngIf='square.mine'>!</p>
     </td>
   </tr>
 </table>
